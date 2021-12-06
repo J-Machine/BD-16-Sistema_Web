@@ -4,12 +4,13 @@ var app = express();
 var connection = require('./database');
 
 app.get('/', function(req, res){
-    let libros = "SELECT * FROM libro;"; // Comando SQL
+    let sql = 'CALL Buscar_Libro("a");'; // Comando SQL
 
-    connection.query(libros, function(err , results){
+    connection.query(sql, function(err , results){
         if(err) throw err;
-        // res.send("Mírame, sin manos!");
+        // console.log(results);
         res.send(results);
+        
     })
 })
 
