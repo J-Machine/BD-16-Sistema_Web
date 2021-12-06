@@ -1,21 +1,30 @@
-var express = require("express");
-var path = require('path');
-var morgan = require('morgan');
-var mysql = require("mysql");
-var myConnection = require("express-myconnection");
+const express = require('express'),
+      path = require('path'),
+      morgan = require('morgan'),
+      mysql = require('mysql'),
+      myConnection = require('express-myconnection');
 
-var app = express();
-var connection = require('./database');
+const app = express();
 
 // Importando rutas
-var listaLibroRoute = require('./routes/lista_libro');
+var listaLibroRoute = require('./routes/listarLibros');
 
 // Setings
+app.set('port', process.env.PORT || 3000);
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Middleweres
 app.use(morgan('dev'));
+app.use(myConnection(mysql, {
+    host: 'localhost',
+    database:'biblioteca',
+    user: 'root',
+    password: 'root',
+    port: 3306
+}, 'single'));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 // routes
 app.use('/', listaLibroRoute);

@@ -1,0 +1,52 @@
+<%- include('partials/_header') -%>
+
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+    <div style="margin-top: 40px;"></div>
+    <div class="card border-primary mb-3">
+        <div class="card-body">
+            <h2>Reporte de Libros</h2>
+            <form action="/search" method="post">
+                <div class="form-group">
+                    <label class="form-label mt-4" for="titulo">Ingrese el título a buscar: </label>
+                    <br>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="titulo" id="titulo" placeholder="Titulo de libro"
+                        aria-label="Titulo de libro" aria-describedby="button-addon2">
+                        <button class="btn btn-primary" type="submit" id="submit">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div style="margin-top: 20px;"></div>
+    <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <td>Nro.</td>
+            <td>Código</td>
+            <td>Nombre de Libro</td>
+            <td>Editorial</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (data) { %>
+            <% for(var i = 0; i < data.length; i++) { %>
+              <tr>
+                <td><%= (i + 1) %></td>
+                <td><%= data[i].Codigo%></td>
+                 <td><%= data[i].Titulo%></td>
+                <td><%= data[i].Editorial %></td>
+              </tr> 
+            <% } %>
+          <% } %>
+        </tbody>
+      </table>
+</div>
+</div>
+
+
+
+<%- include('partials/_footer') -%>

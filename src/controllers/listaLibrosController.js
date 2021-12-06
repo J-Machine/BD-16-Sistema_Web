@@ -1,25 +1,34 @@
 const controller = {};
+var searchText = null;
 
-controller.list = function(req, res){
-    res.send("Hello Jenny");
-    
+controller.getText = (req, res)=>{
+    let  data_form = req.body;
+    req.getConnection((err, conn) => {
+        if(err) throw err;
+        const query = conn.query('CALL Buscar_libro( ? );', data_form.titulo, (err, result) => {
+            console.log("Body's request: ", data_form);
+            if (data_form.titulo == '' || data_form.titulo == ' ') {
+                searchText = null;
+            } else {
+                searchText =  data_form.titulo;
+            }
+          res.redirect('/');
+        })
+      })
 };
 
-// connection. (function(err){
-//     if(err) throw err;
-//     console.log('DB conectada!');
-// });
+controller.list = (req, res) => {
+    req.getConnection((err, conn) => {
+        if(err) throw err;
+        console.log('DB conectada!');
 
-
-// app.get('/', function(req, res){
-//     let sql = 'CALL Buscar_Libro("a");'; // Comando SQL
-
-//     connection.query(sql, function(err , results){
-//         if(err) throw err;
-//         // console.log(results);
-//         res.send(results);
-        
-//     })
-// })
-
+        conn.query('CALL Buscar_Libro("'+ searchText +'");', function (err, result, fields) {
+            console.log(result);
+            res.render('libro_form', {
+                data: result[0]
+            });
+        });
+    });
+};
 module.exports = controller;
+
